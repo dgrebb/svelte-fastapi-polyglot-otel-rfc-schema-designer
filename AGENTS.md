@@ -150,9 +150,10 @@ Svelte MCP instructions: [`.cursor/instructions/svelte.md`](.cursor/instructions
 ## Quick commands
 
 ```bash
+make setup            # first-time bootstrap (see scripts/setup.sh)
 make dev              # docker compose dev (api + ui)
 make up               # docker compose production
-make install-hooks    # api venv + Commitizen git hooks
+make install-hooks    # git hooks only (included in make setup)
 make check-commit     # validate last commit message
 make bump-api         # release api
 make bump-ui          # release ui

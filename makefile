@@ -1,11 +1,20 @@
-.PHONY: dev build build-prod up down restart logs install-hooks check-commit bump-api bump-ui
+.PHONY: dev build build-prod up down restart logs setup install install-hooks check-commit bump-api bump-ui
 
 COMPOSE_PROD := docker compose -f compose.yaml
 COMPOSE_DEV := docker compose -f compose.yaml -f compose.dev.yaml
 # compose.dev.yaml used alone (older invocations) defaults project to the directory name
 COMPOSE_DEV_LEGACY := docker compose -f compose.dev.yaml
+# Pre-rename production stack (compose.yaml name: agent-orchestrator)
+COMPOSE_PROD_LEGACY := docker compose -p agent-orchestrator -f compose.yaml
 
 API_CZ := api/.venv/bin/cz
+SETUP := ./scripts/setup.sh
+
+setup:
+	@chmod +x $(SETUP)
+	@$(SETUP)
+
+install: setup
 
 dev:
 	$(COMPOSE_DEV) up --build
@@ -36,10 +45,11 @@ bump-ui:
 	@test -x $(API_CZ) || (echo "Run: make install-hooks" && exit 1)
 	cd api && ./.venv/bin/cz -c ../ui/.cz.toml bump --changelog
 
-# Stop whatever is running: prod, dev (merged), or legacy dev-only project
+# Stop whatever is running: prod, dev (merged), legacy dev-only, or pre-rename prod project
 down:
 	@$(COMPOSE_DEV) down --remove-orphans 2>/dev/null || true
 	@$(COMPOSE_PROD) down --remove-orphans 2>/dev/null || true
+	@$(COMPOSE_PROD_LEGACY) down --remove-orphans 2>/dev/null || true
 	@$(COMPOSE_DEV_LEGACY) down --remove-orphans 2>/dev/null || true
 
 restart:

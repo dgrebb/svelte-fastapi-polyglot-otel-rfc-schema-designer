@@ -14,6 +14,12 @@ The UI is a small “Agent Orchestrator” demo app. The backend exposes generic
 
 ## Quick start
 
+**New here?** One-time bootstrap (Node, pnpm, Python, Docker checks, deps, Playwright, git hooks):
+
+```bash
+make setup
+```
+
 **Development** (hot reload, UI on :5173, API on :8000):
 
 ```bash
@@ -86,7 +92,7 @@ Set `PUBLIC_API_URL=http://localhost:8000` if the UI runs outside Compose.
 ## Contributing
 
 - **[AGENTS.md](AGENTS.md)** — conventions for humans and LLM agents (worktrees, scopes, releases).
-- **Commits** — [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) + `wip` type; scope optional (`api`, `ui`, …). Rules in [`.cz.toml`](.cz.toml); enforced via Commitizen (`cz check`).
-- **PRs** — squash-merged; **PR title** is the canonical commit message.
-- **Hooks** — `make install-hooks` once (Python Commitizen in `api/.venv`, `.githooks/commit-msg`).
+- **Commits** — one-line [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) + `wip`; scope optional. Rules in [`.cz.toml`](.cz.toml). **No commit bodies** — put detail in PR descriptions.
+- **PRs** — squash-merged; **PR title** (one line) is the canonical commit on `main`.
+- **Hooks** — `make setup` or `make install-hooks` (Python Commitizen in `api/.venv`, `.githooks/commit-msg`).
 - **Releases** — independent per package: `make bump-api` → tag `api-X.Y.Z`, `make bump-ui` → tag `ui-X.Y.Z` (no `v` prefix).
