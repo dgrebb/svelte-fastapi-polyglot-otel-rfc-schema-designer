@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API: Dev Server",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ],
+      "cwd": "${workspaceFolder}/api",
+      "preLaunchTask": "api: install",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "API: Run (production)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app.main:app", "--host", "0.0.0.0", "--port", "8000"],
+      "cwd": "${workspaceFolder}/api",
+      "preLaunchTask": "api: install",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "API: Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-q"],
+      "cwd": "${workspaceFolder}/api",
+      "preLaunchTask": "api: install",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}

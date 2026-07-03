@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "api: install",
+      "type": "shell",
+      "command": "make install",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "group": "build"
+    },
+    {
+      "label": "api: update",
+      "type": "shell",
+      "command": "make update",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "group": "build"
+    },
+    {
+      "label": "api: dev",
+      "type": "shell",
+      "command": "make dev",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "uvicorn",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Uvicorn running",
+          "endsPattern": "Application startup complete"
+        }
+      }
+    },
+    {
+      "label": "api: run",
+      "type": "shell",
+      "command": "make run",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "uvicorn",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Uvicorn running",
+          "endsPattern": "Application startup complete"
+        }
+      }
+    },
+    {
+      "label": "api: test",
+      "type": "shell",
+      "command": "make test",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "group": "test"
+    },
+    {
+      "label": "api: lint",
+      "type": "shell",
+      "command": "make lint",
+      "options": { "cwd": "${workspaceFolder}/api" },
+      "group": "test"
+    }
+  ]
+}
