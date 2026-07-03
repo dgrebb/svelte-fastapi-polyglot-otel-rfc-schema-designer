@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LightSwitch } from '$lib/components/ui/light-switch/index.js';
+	import { LightSwitch } from '$lib/components/ui/light-switch';
 </script>
 
 <header class="border-b border-border/60 bg-background/80 backdrop-blur-sm">
@@ -17,7 +17,7 @@
 				href="/status"
 				class="rounded-sm px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
 			>
-				Status Butt
+				Status
 			</a>
 			<LightSwitch variant="ghost" size="sm" />
 		</nav>

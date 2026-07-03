@@ -1,16 +1,10 @@
 <script lang="ts">
 	import StatusLed, { type LedState } from '$lib/components/status/StatusLed.svelte';
-	import { Badge } from '$lib/components/ui/badge/index.js';
-	import {
-		Card,
-		CardContent,
-		CardDescription,
-		CardHeader,
-		CardTitle
-	} from '$lib/components/ui/card/index.js';
-	import { Meter } from '$lib/components/ui/meter/index.js';
-	import { Progress } from '$lib/components/ui/progress/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
+	import { Badge } from '$lib/components/ui/badge';
+	import * as Card from '$lib/components/ui/card';
+	import { Meter } from '$lib/components/ui/meter';
+	import * as Progress from '$lib/components/ui/progress';
+	import * as Separator from '$lib/components/ui/separator';
 
 	import { formatPackageVersions } from '$lib/versions';
 
@@ -46,6 +40,8 @@
 
 	const releaseLabel = $derived(snapshot ? formatPackageVersions(snapshot.versions) : '');
 
+	const statTileClass = 'status-surface flex h-full min-h-11 items-center gap-3 px-4 py-3';
+
 	function formatUptime(seconds: number): string {
 		if (seconds < 60) return `${seconds}s`;
 		const minutes = Math.floor(seconds / 60);
@@ -60,25 +56,29 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-<div class="mx-auto max-w-5xl px-4 py-8">
-	<div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+<div class="mx-auto max-w-5xl space-y-6 px-4 py-8">
+	<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 		<div>
 			<p class="text-xs tracking-[0.2em] text-muted-foreground uppercase">Frontend operations</p>
 			<h1 class="font-heading mt-1 text-2xl font-semibold tracking-tight">UI Status</h1>
 		</div>
 		{#if snapshot}
-			<div class="flex items-center gap-3 rounded-md border border-border bg-card px-4 py-3">
+			<div
+				class="status-surface flex flex-wrap items-center gap-3 px-4 py-3 sm:max-w-md sm:justify-end"
+			>
 				<StatusLed state={overallLed} />
-				<div>
+				<div class="min-w-0">
 					<p class="text-sm font-medium capitalize">{snapshot.status.replace('_', ' ')}</p>
-					<p class="text-xs text-muted-foreground">{releaseLabel}</p>
+					<p class="truncate text-xs text-muted-foreground">{releaseLabel}</p>
 				</div>
-				<Badge variant={snapshot.ready ? 'default' : 'destructive'}>
-					{snapshot.ready ? 'Ready' : 'Not ready'}
-				</Badge>
-				<Badge variant="outline" class={status.connected ? 'border-emerald-500/50' : ''}>
-					{status.connected ? 'Live' : 'Reconnecting'}
-				</Badge>
+				<div class="flex flex-wrap items-center gap-2">
+					<Badge variant={snapshot.ready ? 'default' : 'destructive'}>
+						{snapshot.ready ? 'Ready' : 'Not ready'}
+					</Badge>
+					<Badge variant="outline" class={status.connected ? 'border-emerald-500/50' : ''}>
+						{status.connected ? 'Live' : 'Reconnecting'}
+					</Badge>
+				</div>
 			</div>
 		{:else}
 			<Badge variant="outline">Connecting…</Badge>
@@ -86,59 +86,61 @@
 	</div>
 
 	{#if snapshot}
-		<div class="mb-6 grid gap-3 sm:grid-cols-3">
-			<div class="flex items-center gap-3 rounded-md border border-border bg-card/50 px-4 py-3">
+		<div class="grid items-stretch gap-4 sm:grid-cols-3">
+			<div class={statTileClass}>
 				<StatusLed state={overallLed} />
 				<span class="text-sm font-medium">SSR server</span>
-				<Badge variant="outline" class="ml-auto">{snapshot.runtime.env}</Badge>
+				<Badge variant="outline" class="ml-auto shrink-0">{snapshot.runtime.env}</Badge>
 			</div>
-			<div class="flex items-center gap-3 rounded-md border border-border bg-card/50 px-4 py-3">
+			<div class={statTileClass}>
 				<StatusLed state={heapLed} />
 				<span class="text-sm font-medium">Process heap</span>
-				<span class="ml-auto font-mono text-sm">{heapPercent}%</span>
+				<span class="ml-auto shrink-0 font-mono text-sm">{heapPercent}%</span>
 			</div>
-			<div class="flex items-center gap-3 rounded-md border border-border bg-card/50 px-4 py-3">
+			<div class={statTileClass}>
 				<StatusLed state={memoryLed} />
 				<span class="text-sm font-medium">Visible memory</span>
-				<span class="ml-auto font-mono text-sm">{snapshot.system.memory_used_percent}%</span>
+				<span class="ml-auto shrink-0 font-mono text-sm"
+					>{snapshot.system.memory_used_percent}%</span
+				>
 			</div>
 		</div>
 
-		<div class="grid gap-4 md:grid-cols-2">
-			<Card>
-				<CardHeader>
-					<CardTitle class="flex items-center gap-2 text-base">
+		<div class="grid items-stretch gap-4 md:grid-cols-2">
+			<Card.Root class="h-full">
+				<Card.Header>
+					<Card.Title class="flex items-center gap-2">
 						<StatusLed state={overallLed} />
 						Runtime
-					</CardTitle>
-					<CardDescription>Node process serving this UI</CardDescription>
-				</CardHeader>
-				<CardContent class="space-y-3 text-sm">
+					</Card.Title>
+					<Card.Description>Node process serving this UI</Card.Description>
+				</Card.Header>
+				<Card.Content class="flex flex-1 flex-col space-y-3 text-sm">
 					<div class="flex justify-between gap-4">
 						<span class="text-muted-foreground">Node</span>
 						<span class="font-mono">{snapshot.runtime.node}</span>
 					</div>
-					<Separator />
+					<Separator.Root />
 					<div class="flex justify-between gap-4">
 						<span class="text-muted-foreground">Uptime</span>
 						<span class="font-mono">{formatUptime(snapshot.runtime.uptime_seconds)}</span>
 					</div>
-					<div class="flex justify-between gap-4">
+					<div class="mt-auto flex justify-between gap-4">
 						<span class="text-muted-foreground">Environment</span>
 						<span class="font-mono">{snapshot.runtime.env}</span>
 					</div>
-				</CardContent>
-			</Card>
+				</Card.Content>
+			</Card.Root>
 
-			<Card>
-				<CardHeader>
-					<CardTitle class="flex items-center gap-2 text-base">
+			<Card.Root class="h-full">
+				<Card.Header>
+					<Card.Title class="flex items-center gap-2">
 						<StatusLed state={heapLed} />
 						Process memory
-					</CardTitle>
-					<CardDescription>V8 heap and RSS for this Node process</CardDescription>
-				</CardHeader>
-				<CardContent class="space-y-4 text-sm">
+					</Card.Title>
+					<Card.Description>V8 heap and RSS for this Node process</Card.Description>
+				</Card.Header>
+				<Card.Content class="flex flex-1 flex-col space-y-3 text-sm">
 					<div class="space-y-2">
 						<div class="flex justify-between text-xs text-muted-foreground">
 							<span>Heap</span>
@@ -146,28 +148,28 @@
 								>{snapshot.process.heap_used_mb} / {snapshot.process.heap_total_mb} MB</span
 							>
 						</div>
-						<Progress value={heapPercent} max={100} />
+						<Progress.Root value={heapPercent} max={100} />
 					</div>
-					<div class="flex justify-between gap-4">
+					<div class="mt-auto flex justify-between gap-4">
 						<span class="text-muted-foreground">RSS</span>
 						<span class="font-mono">{snapshot.process.rss_mb} MB</span>
 					</div>
-				</CardContent>
-			</Card>
+				</Card.Content>
+			</Card.Root>
 
-			<Card class="md:col-span-2">
-				<CardHeader>
-					<CardTitle class="flex items-center gap-2 text-base">
+			<Card.Root class="h-full md:col-span-2">
+				<Card.Header>
+					<Card.Title class="flex items-center gap-2">
 						<StatusLed state={memoryLed} />
 						Container-visible resources
-					</CardTitle>
-					<CardDescription>
+					</Card.Title>
+					<Card.Description>
 						What this Node process can see via <code class="text-xs">os</code> — often the Docker host,
 						not a cgroup limit
-					</CardDescription>
-				</CardHeader>
-				<CardContent class="grid gap-4 text-sm sm:grid-cols-3">
-					<div class="space-y-2 sm:col-span-1">
+					</Card.Description>
+				</Card.Header>
+				<Card.Content class="grid h-full gap-4 text-sm sm:grid-cols-3 sm:items-stretch">
+					<div class="flex h-full flex-col gap-2">
 						<div class="flex justify-between text-xs text-muted-foreground">
 							<span>Memory</span>
 							<span class="font-mono">{snapshot.system.memory_used_percent}%</span>
@@ -177,16 +179,16 @@
 							{snapshot.system.memory_used_mb} / {snapshot.system.memory_total_mb} MB
 						</p>
 					</div>
-					<div class="flex flex-col justify-center gap-2">
+					<div class="flex h-full flex-col gap-1">
 						<span class="text-muted-foreground">CPUs visible</span>
-						<span class="font-mono text-lg">{snapshot.system.cpus}</span>
+						<span class="font-mono text-lg leading-none">{snapshot.system.cpus}</span>
 					</div>
-					<div class="flex flex-col justify-center gap-2">
+					<div class="flex h-full flex-col gap-1">
 						<span class="text-muted-foreground">Load average</span>
-						<span class="font-mono text-lg">{loadLabel}</span>
+						<span class="font-mono text-lg leading-none">{loadLabel}</span>
 					</div>
-				</CardContent>
-			</Card>
+				</Card.Content>
+			</Card.Root>
 		</div>
 	{/if}
 </div>
