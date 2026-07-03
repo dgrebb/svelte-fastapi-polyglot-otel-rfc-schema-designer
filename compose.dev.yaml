@@ -25,6 +25,9 @@ services:
       context: ./ui
       dockerfile: Dockerfile
       target: dev
+      args:
+        UI_VERSION: ${UI_VERSION}
+        API_VERSION: ${API_VERSION}
     image: svelte-fastapi-remote-functions-ui:dev
     ports:
       - "5173:5173"
@@ -32,6 +35,8 @@ services:
       CI: "true"
       ORIGIN: http://localhost:5173
       PUBLIC_API_URL: http://localhost:8000
+      UI_VERSION: ${UI_VERSION}
+      API_VERSION: ${API_VERSION}
     volumes:
       - ./ui:/app
       - ui-node-modules:/app/node_modules

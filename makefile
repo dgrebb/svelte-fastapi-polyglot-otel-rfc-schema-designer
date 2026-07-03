@@ -1,5 +1,10 @@
 .PHONY: dev build build-prod up down restart logs setup install install-hooks check-commit bump-api bump-ui
 
+UI_VERSION := $(shell node -p "require('./ui/package.json').version" 2>/dev/null || echo unknown)
+API_VERSION := $(shell grep -m1 '^version = ' api/pyproject.toml 2>/dev/null | sed 's/.*"\(.*\)".*/\1/' || echo unknown)
+export UI_VERSION
+export API_VERSION
+
 COMPOSE_PROD := docker compose -f compose.yaml
 COMPOSE_DEV := docker compose -f compose.yaml -f compose.dev.yaml
 # compose.dev.yaml used alone (older invocations) defaults project to the directory name

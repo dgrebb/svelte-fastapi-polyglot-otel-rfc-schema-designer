@@ -29,12 +29,17 @@ services:
     build:
       context: ./ui
       target: runner
+      args:
+        UI_VERSION: ${UI_VERSION}
+        API_VERSION: ${API_VERSION}
     image: svelte-fastapi-remote-functions-ui:production
     ports:
       - "3000:3000"
     environment:
       ORIGIN: http://localhost:3000
       PUBLIC_API_URL: http://localhost:8000
+      UI_VERSION: ${UI_VERSION}
+      API_VERSION: ${API_VERSION}
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/status?format=json"]
       interval: 15s

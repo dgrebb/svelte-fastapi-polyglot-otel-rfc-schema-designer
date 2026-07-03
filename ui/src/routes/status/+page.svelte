@@ -12,7 +12,7 @@
 	import { Progress } from '$lib/components/ui/progress/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 
-	import { formatPackageVersions } from '$lib/server/versions';
+	import { formatPackageVersions } from '$lib/versions';
 
 	import { getStatus } from './status.remote.js';
 

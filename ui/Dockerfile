@@ -8,6 +8,9 @@ ARG NODE_IMAGE=node:24-alpine
 
 FROM ${NODE_IMAGE} AS dev
 
+ARG UI_VERSION=unknown
+ARG API_VERSION=unknown
+
 RUN corepack enable
 
 WORKDIR /app
@@ -16,6 +19,9 @@ COPY package.json pnpm-lock.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
+
+ENV UI_VERSION=${UI_VERSION} \
+    API_VERSION=${API_VERSION}
 
 EXPOSE 5173
 
@@ -41,6 +47,9 @@ RUN pnpm build && \
 # --- Production runner --------------------------------------------------------
 
 FROM ${NODE_IMAGE} AS runner
+
+ARG UI_VERSION=unknown
+ARG API_VERSION=unknown
 
 LABEL org.opencontainers.image.description="svelte-fastapi-remote-functions UI (SvelteKit)"
 LABEL org.opencontainers.image.source="https://github.com/svelte-fastapi-remote-functions"
@@ -79,7 +88,9 @@ USER node
 
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
-    PORT=3000
+    PORT=3000 \
+    UI_VERSION=${UI_VERSION} \
+    API_VERSION=${API_VERSION}
 
 EXPOSE 3000
 
