@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "compose dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "COMPOSE_FILE=compose.yaml:compose.dev.yaml docker compose up --build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "compose up",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "docker compose up --build",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

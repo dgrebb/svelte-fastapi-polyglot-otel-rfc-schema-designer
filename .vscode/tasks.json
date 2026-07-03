@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compose: dev",
+      "type": "shell",
+      "command": "COMPOSE_FILE=compose.yaml:compose.dev.yaml docker compose up",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "compose: up",
+      "type": "shell",
+      "command": "docker compose up",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "compose: down",
+      "type": "shell",
+      "command": "docker compose -f compose.yaml -f compose.dev.yaml down && docker compose down",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "compose: build",
+      "type": "shell",
+      "command": "docker compose build",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "build"
+    }
+  ]
+}

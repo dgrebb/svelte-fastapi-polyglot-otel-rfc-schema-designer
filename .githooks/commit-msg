@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+ROOT=$(git rev-parse --show-toplevel)
+CZ="$ROOT/api/.venv/bin/cz"
+
+if [ ! -x "$CZ" ]; then
+	echo "commit-msg hook: run 'make install-hooks' (missing $CZ)" >&2
+	exit 1
+fi
+
+cd "$ROOT"
+exec "$CZ" check --commit-msg-file "$1"

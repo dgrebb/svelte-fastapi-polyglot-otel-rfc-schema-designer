@@ -1,0 +1,11 @@
+# Repo-wide commit message rules (validation only — not a releasable package).
+# Package releases use api/pyproject.toml and ui/.cz.toml.
+
+[tool.commitizen]
+name = "cz_customize"
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{message}}"
+example = "feat(api): add workflow graph endpoint"
+schema = "<type>[optional scope]: <description>"
+schema_pattern = "(?P<change_type>feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|wip)(\\((?P<scope>[^)\\n]+)\\))?!?: (?P<message>.+)"
