@@ -30,9 +30,11 @@ We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) wi
 
 ```
 <type>[optional scope]: <description>
-
-[optional body]
 ```
+
+**One line only** — subject line is the whole commit message. No body or footer unless you have a rare, explicit reason (e.g. `BREAKING CHANGE:` that cannot fit in the subject). Put implementation notes, screenshots, and rationale in the **PR description**, not in git history.
+
+On feature branches and worktrees, short one-line commits are fine even if imperfect; they are squash-merged away. Use a longer body only when it helps **you** during review on that branch — not for `main`.
 
 ### Types
 
@@ -64,7 +66,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) wi
 | `docs` | README, AGENTS, changelogs |
 | `deps` | Dependency bumps (pip, pnpm) |
 | `ci` | GitHub Actions, hooks automation |
-| `repo` | Root Makefile, `.cz.toml`, `.githooks`, shared tooling |
+| `repo` | Root Makefile, `.cz.toml`, `.githooks`, `.cursor/agents`, shared tooling |
 
 Examples:
 
@@ -78,12 +80,12 @@ docs(repo): clarify worktree workflow in AGENTS
 
 ### Squash merges
 
-**All PRs are squash-merged.** The **PR title** becomes the permanent commit message on `main`. It must pass Commitizen validation (`cz check`).
+**All PRs are squash-merged.** The **PR title** (one line) becomes the permanent commit on `main`. It must pass Commitizen validation (`cz check`).
 
-- Title: `feat(ui): add live status dashboard`
-- Body: implementation notes, screenshots, breaking changes (`BREAKING CHANGE:` footer in body if needed)
+- **Title** — single conventional line, e.g. `feat(ui): add live status dashboard`
+- **PR body** — details, screenshots, test plan, breaking-change notes (`BREAKING CHANGE:` here if needed)
 
-Local commits inside a PR can be messy; the squash title is what matters.
+Local commits inside a PR can be one-line and messy; only the squash title survives on `main`.
 
 ### Git hook
 
@@ -110,10 +112,27 @@ make bump-ui    # tags ui-X.Y.Z, updates ui/CHANGELOG.md
 
 Future automation can map `wip`-heavy lines to `beta`, `pre-release`, or `unreleased` channels without changing tag format.
 
+## Subagents
+
+Specialist agents live in **[`.cursor/agents/`](.cursor/agents/README.md)**. Delegate atomic work to preserve main-thread context.
+
+| Subagent | Scope |
+|----------|--------|
+| `openspec-pm` | OpenSpec changes, task breakdown, multi-agent coordination |
+| `svelte-file-editor` | `ui/` — Svelte 5, SvelteKit, `query.live`, shadcn ([Svelte AI subagent](https://svelte.dev/docs/ai/subagent)) |
+| `fastapi-backend` | `api/` — FastAPI, SQLAlchemy, pytest |
+| `unit-test` | pytest (`api/`) + Vitest (`ui/`) |
+| `e2e-test` | Playwright browser tests (`ui/` only) |
+| `docker-compose` | Dockerfiles, compose, Makefile |
+
+**`openspec-pm`** may assign tasks and spawn other subagents without waiting on the orchestrator, but must **keep the main thread informed** and relay user input between agents.
+
+Svelte MCP instructions: [`.cursor/instructions/svelte.md`](.cursor/instructions/svelte.md) ([Svelte AI overview](https://svelte.dev/docs/ai/overview)).
+
 ## What agents should do
 
 1. **Read the scope** — stay in `api/` or `ui/` unless the task is cross-cutting.
-2. **Use conventional commit format** for PR titles and local commits when possible.
+2. **One-line conventional commits** — `type(scope): description` only; save detail for PR descriptions.
 3. **Use `wip`** for exploratory or incomplete work that should not imply a release.
 4. **Do not add `v` to version tags.**
 5. **Do not couple releases** — bumping the API does not require bumping the UI.
