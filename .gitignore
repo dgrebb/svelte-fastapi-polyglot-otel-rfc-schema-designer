@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / local tooling (not part of the published example)
+.idea/
+*.swp
+.cursor/
+.opencode/
+**/.cursor/
+**/.opencode/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Root tooling (removed if present — JS lives in ui/ only)
+node_modules/
+
+# Agent Workspace
+tmp/
