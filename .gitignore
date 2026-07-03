@@ -5,9 +5,16 @@ Thumbs.db
 # IDE / local tooling (not part of the published example)
 .idea/
 *.swp
-.cursor/
+.cursor/*
+!.cursor/agents/
+!.cursor/agents/**
+!.cursor/commands/
+!.cursor/commands/**
+!.cursor/skills/
+!.cursor/skills/**
+!.cursor/instructions/
+!.cursor/instructions/**
 .opencode/
-**/.cursor/
 **/.opencode/
 
 # Environment

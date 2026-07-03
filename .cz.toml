@@ -1,5 +1,8 @@
 # Repo-wide commit message rules (validation only — not a releasable package).
 # Package releases use api/pyproject.toml and ui/.cz.toml.
+#
+# Convention: ONE subject line per commit (no body). Details belong in PR descriptions.
+# cz check validates the first line; bodies are discouraged, not forbidden.
 
 [tool.commitizen]
 name = "cz_customize"

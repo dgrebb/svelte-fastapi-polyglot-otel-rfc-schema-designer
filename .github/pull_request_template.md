@@ -1,12 +1,19 @@
-## Summary
+## Title (squash commit — one line only)
 
-<!-- Squash-merge: this title becomes the commit on main. Use Conventional Commits. -->
+<!-- Becomes the permanent commit on main. Conventional Commits: type(scope): description -->
 
-<!-- type(scope): description -->
-<!-- Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore | revert | wip -->
+<!-- feat | fix | docs | style | refactor | perf | test | build | ci | chore | revert | wip -->
 <!-- Scopes (optional): api | ui | compose | docker | docs | deps | ci | repo -->
 
+## Summary
+
+<!-- Implementation notes, screenshots, breaking changes — detail lives here, not in commit bodies. -->
+
 ## Changes
+
+-
+
+## Test plan
 
 -
 
