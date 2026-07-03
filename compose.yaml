@@ -1,0 +1,49 @@
+name: svelte-fastapi-remote-functions
+
+services:
+  api:
+    build:
+      context: ./api
+      target: production
+    image: svelte-fastapi-remote-functions-api:production
+    ports:
+      - "8000:8000"
+    environment:
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
+    volumes:
+      - api-data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  ui:
+    build:
+      context: ./ui
+      target: runner
+    image: svelte-fastapi-remote-functions-ui:production
+    ports:
+      - "3000:3000"
+    environment:
+      ORIGIN: http://localhost:3000
+      PUBLIC_API_URL: http://localhost:8000
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/status?format=json"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api-data:

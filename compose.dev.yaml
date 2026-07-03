@@ -1,0 +1,51 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: dev
+    image: svelte-fastapi-remote-functions-api:dev
+    environment:
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+    volumes:
+      - ./api:/app
+    command:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+      ]
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+      target: dev
+    image: svelte-fastapi-remote-functions-ui:dev
+    ports:
+      - "5173:5173"
+    environment:
+      CI: "true"
+      ORIGIN: http://localhost:5173
+      PUBLIC_API_URL: http://localhost:8000
+    volumes:
+      - ./ui:/app
+      - ui-node-modules:/app/node_modules
+    command:
+      [
+        "sh",
+        "-c",
+        "corepack pnpm install --frozen-lockfile && exec corepack pnpm dev --host 0.0.0.0 --port 5173",
+      ]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:5173/status?format=json"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+volumes:
+  ui-node-modules:
