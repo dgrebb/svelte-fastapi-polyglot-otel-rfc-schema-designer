@@ -1,0 +1,11 @@
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.1"
+tag_format = "ui-$version"
+version_scheme = "semver"
+version_files = ["package.json:version"]
+update_changelog_on_bump = true
+changelog_file = "CHANGELOG.md"
+bump_message = "chore(ui): release ui $current_version → $new_version"
+major_version_zero = true
+changelog_pattern = "^(feat|fix|refactor|perf|BREAKING)"
