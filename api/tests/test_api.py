@@ -69,6 +69,33 @@ def test_list_and_create_agent() -> None:
     assert len(final_list.json()) == initial_count
 
 
+def test_create_agent_validation_missing_name() -> None:
+    response = client.post("/agents/create", json={"model": "claude-sonnet-4"})
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert any(error["loc"][-1] == "name" for error in detail)
+
+
+def test_create_agent_validation_empty_name() -> None:
+    response = client.post(
+        "/agents/create",
+        json={"name": "", "model": "claude-sonnet-4"},
+    )
+    assert response.status_code == 422
+
+
+def test_create_agent_validation_extra_fields() -> None:
+    response = client.post(
+        "/agents/create",
+        json={
+            "name": "Valid Agent",
+            "model": "claude-sonnet-4",
+            "unknown_field": "not allowed",
+        },
+    )
+    assert response.status_code == 422
+
+
 def test_workflow_graph() -> None:
     workflows = client.get("/workflows").json()
     assert workflows

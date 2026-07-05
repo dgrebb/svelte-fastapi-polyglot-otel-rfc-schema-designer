@@ -162,6 +162,20 @@ class Agent(AgentCreate, Timestamped):
     pass
 
 
+class AgentUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str | None = Field(default=None, min_length=1, max_length=120)
+    description: str | None = None
+    model: str | None = Field(default=None, min_length=1)
+    system_prompt: str | None = None
+    toolkit_id: str | None = None
+    compute_profile_id: str | None = None
+    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
+    max_tokens: int | None = Field(default=None, ge=256, le=200_000)
+    tags: list[str] | None = None
+
+
 AGENT_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Agent",

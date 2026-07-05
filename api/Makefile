@@ -1,4 +1,4 @@
-.PHONY: install update dev run build test lint clean
+.PHONY: install update dev run build test lint clean export-openapi
 
 VENV := .venv
 PYTHON := $(VENV)/bin/python
@@ -27,6 +27,9 @@ test:
 
 lint:
 	$(VENV)/bin/ruff check .
+
+export-openapi:
+	$(PYTHON) scripts/export_openapi.py
 
 clean:
 	rm -rf $(VENV) data __pycache__ app/__pycache__ app/**/__pycache__ .pytest_cache .ruff_cache
