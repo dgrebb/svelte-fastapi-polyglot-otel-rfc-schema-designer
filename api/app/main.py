@@ -4,14 +4,17 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.db.database import SessionLocal, init_db
+from app.db.database import SessionLocal, engine, init_db
 from app.db.repository import seed_demo_data
+from app.observability import setup as setup_observability
+from app.observability import shutdown as shutdown_observability
 from app.routers.entities import router as entities_router
 from app.routers.workflows import router as workflows_router
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
+async def lifespan(fastapi_app: FastAPI):
+    setup_observability(fastapi_app, engine=engine)
     init_db()
     db = SessionLocal()
     try:
@@ -19,6 +22,7 @@ async def lifespan(_: FastAPI):
     finally:
         db.close()
     yield
+    shutdown_observability()
 
 
 app = FastAPI(

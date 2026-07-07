@@ -15,7 +15,9 @@
 		"shad": "pnpm dlx shadcn-svelte@latest add",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright install && playwright test"
+		"test:e2e": "playwright install && playwright test",
+		"generate:api": "node scripts/generate-api.mjs",
+		"check:generated": "pnpm generate:api && git diff --exit-code src/lib/generated"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
@@ -56,6 +58,15 @@
 		"vitest-browser-svelte": "^2.1.1"
 	},
 	"dependencies": {
-		"mode-watcher": "^1.1.0"
+		"@opentelemetry/api": "^1.9.1",
+		"@opentelemetry/exporter-metrics-otlp-http": "^0.219.0",
+		"@opentelemetry/exporter-trace-otlp-http": "^0.219.0",
+		"@opentelemetry/instrumentation-http": "^0.219.0",
+		"@opentelemetry/resources": "^2.8.0",
+		"@opentelemetry/sdk-metrics": "^2.8.0",
+		"@opentelemetry/sdk-node": "^0.219.0",
+		"@opentelemetry/semantic-conventions": "^1.41.1",
+		"mode-watcher": "^1.1.0",
+		"valibot": "^1.2.0"
 	}
 }

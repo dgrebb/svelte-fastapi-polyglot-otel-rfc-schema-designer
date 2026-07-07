@@ -15,8 +15,9 @@ RUN corepack enable
 
 WORKDIR /app
 
+ENV CI=true
 COPY package.json pnpm-lock.yaml .npmrc ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 
 COPY . .
 
@@ -31,14 +32,21 @@ CMD ["corepack", "pnpm", "dev", "--host", "0.0.0.0", "--port", "5173"]
 
 FROM ${NODE_IMAGE} AS builder
 
+ARG UI_VERSION=unknown
+ARG API_VERSION=unknown
+
 RUN corepack enable
 
 WORKDIR /app
 
+ENV CI=true
 COPY package.json pnpm-lock.yaml .npmrc ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --dangerously-allow-all-builds
 
 COPY . .
+
+ENV UI_VERSION=${UI_VERSION} \
+    API_VERSION=${API_VERSION}
 
 RUN pnpm build && \
     pnpm prune --prod && \

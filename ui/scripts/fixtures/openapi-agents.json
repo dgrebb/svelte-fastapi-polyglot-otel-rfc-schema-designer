@@ -1,0 +1,221 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Agent Orchestrator API",
+		"version": "0.0.1"
+	},
+	"paths": {
+		"/agents": {
+			"get": {
+				"tags": ["entities"],
+				"summary": "List Agents",
+				"operationId": "list_agents",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": { "$ref": "#/components/schemas/Agent" }
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/agents/properties": {
+			"get": {
+				"tags": ["entities"],
+				"summary": "Get Agent Properties",
+				"operationId": "get_agent_properties",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/AgentProperties" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/agents/{entity_id}": {
+			"get": {
+				"tags": ["entities"],
+				"summary": "Get Agent",
+				"operationId": "get_agent",
+				"parameters": [
+					{
+						"name": "entity_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Agent" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/agents/create": {
+			"post": {
+				"tags": ["entities"],
+				"summary": "Create Agent",
+				"operationId": "create_agent",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/AgentCreate" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Agent" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/agents/{entity_id}/update": {
+			"patch": {
+				"tags": ["entities"],
+				"summary": "Update Agent",
+				"operationId": "update_agent",
+				"parameters": [
+					{
+						"name": "entity_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/AgentUpdate" }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Agent" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/agents/{entity_id}/delete": {
+			"delete": {
+				"tags": ["entities"],
+				"summary": "Delete Agent",
+				"operationId": "delete_agent",
+				"parameters": [
+					{
+						"name": "entity_id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Agent" }
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"AgentCreate": {
+				"type": "object",
+				"required": ["name", "model"],
+				"properties": {
+					"name": { "type": "string", "minLength": 1, "maxLength": 120 },
+					"description": { "type": "string", "default": "" },
+					"model": { "type": "string", "minLength": 1, "default": "claude-sonnet-4" },
+					"system_prompt": {
+						"type": "string",
+						"default": "You are a helpful AI agent."
+					},
+					"toolkit_id": { "type": ["string", "null"] },
+					"compute_profile_id": { "type": ["string", "null"] },
+					"temperature": { "type": "number", "minimum": 0, "maximum": 2, "default": 0.7 },
+					"max_tokens": {
+						"type": "integer",
+						"minimum": 256,
+						"maximum": 200000,
+						"default": 4096
+					},
+					"tags": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": []
+					}
+				}
+			},
+			"AgentUpdate": {
+				"type": "object",
+				"properties": {
+					"name": { "type": "string", "minLength": 1, "maxLength": 120 },
+					"description": { "type": "string" },
+					"model": { "type": "string", "minLength": 1 },
+					"system_prompt": { "type": "string" },
+					"toolkit_id": { "type": ["string", "null"] },
+					"compute_profile_id": { "type": ["string", "null"] },
+					"temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+					"max_tokens": { "type": "integer", "minimum": 256, "maximum": 200000 },
+					"tags": { "type": "array", "items": { "type": "string" } }
+				}
+			},
+			"Agent": {
+				"allOf": [{ "$ref": "#/components/schemas/AgentCreate" }, { "$ref": "#/components/schemas/Timestamped" }]
+			},
+			"Timestamped": {
+				"type": "object",
+				"required": ["id"],
+				"properties": {
+					"id": { "type": "string" },
+					"created_at": { "type": ["string", "null"] },
+					"updated_at": { "type": ["string", "null"] }
+				}
+			},
+			"AgentProperties": {
+				"type": "object",
+				"required": ["entity", "label", "schema", "relations"],
+				"properties": {
+					"entity": { "type": "string" },
+					"label": { "type": "string" },
+					"schema": { "type": "object", "additionalProperties": true },
+					"relations": { "type": "array", "items": { "type": "string" } }
+				}
+			}
+		}
+	}
+}

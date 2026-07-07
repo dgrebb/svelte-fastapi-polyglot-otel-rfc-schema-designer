@@ -44,7 +44,7 @@ services:
       [
         "sh",
         "-c",
-        "corepack pnpm install --frozen-lockfile && exec corepack pnpm dev --host 0.0.0.0 --port 5173",
+        "corepack pnpm install --frozen-lockfile --dangerously-allow-all-builds && exec corepack pnpm dev --host 0.0.0.0 --port 5173",
       ]
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:5173/status?format=json"]

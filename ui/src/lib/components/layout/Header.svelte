@@ -19,6 +19,12 @@
 			>
 				Status
 			</a>
+			<a
+				href="/admin/api-explorer"
+				class="rounded-sm px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+			>
+				API Explorer
+			</a>
 			<LightSwitch variant="ghost" size="sm" />
 		</nav>
 	</div>

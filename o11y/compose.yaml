@@ -1,0 +1,83 @@
+# Overlay for dev o11y — use with compose.yaml + compose.dev.yaml:
+#   docker compose -f compose.yaml -f compose.dev.yaml -f o11y/compose.yaml --profile o11y up
+#
+# Profiles:
+#   o11y          — otel-collector (debug exporter)
+#   o11y-grafana  — grafana/otel-lgtm backend
+#   o11y-elastic  — elasticsearch + kibana backend
+#
+# Collector config is selected via OTEL_COLLECTOR_CONFIG (see makefile).
+
+services:
+  api:
+    environment:
+      OTEL_ENABLED: ${OTEL_ENABLED:-true}
+      OTEL_SERVICE_NAME: api
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_RESOURCE_ATTRIBUTES: deployment.environment=local,app.component=api,runtime.name=python
+      OTEL_PYTHON_FASTAPI_EXCLUDED_URLS: /health
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+
+  ui:
+    environment:
+      OTEL_ENABLED: ${OTEL_ENABLED:-true}
+      OTEL_SERVICE_NAME: ui
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_RESOURCE_ATTRIBUTES: deployment.environment=local,app.component=ui,runtime.name=nodejs
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+  otel-collector:
+    profiles: [o11y, o11y-grafana, o11y-elastic]
+    image: otel/opentelemetry-collector-contrib:0.120.0
+    command:
+      - --config=/etc/otelcol/config.yml
+    volumes:
+      - ./o11y/otel/${OTEL_COLLECTOR_CONFIG_FILE:-collector.dev.yml}:/etc/otelcol/config.yml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+
+  lgtm:
+    profiles: [o11y-grafana]
+    image: grafana/otel-lgtm:0.8.1
+    ports:
+      - "3001:3000"
+
+  elasticsearch:
+    profiles: [o11y-elastic]
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.3
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'curl -fsS http://localhost:9200/_cluster/health | grep -qE ''"status":"(green|yellow)"''',
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  kibana:
+    profiles: [o11y-elastic]
+    image: docker.elastic.co/kibana/kibana:8.15.3
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  es-data:
