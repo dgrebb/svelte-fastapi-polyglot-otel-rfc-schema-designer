@@ -1,6 +1,5 @@
 import { API_BASE_URL } from '$app/env/private';
-import type { GenericSchema, InferOutput } from 'valibot';
-import { safeParse } from 'valibot';
+import type { ZodTypeAny, infer as InferOutput } from 'zod';
 
 export class BackendError extends Error {
 	status: number;
@@ -14,7 +13,7 @@ export class BackendError extends Error {
 	}
 }
 
-type BackendFetchOptions<TSchema extends GenericSchema | undefined = undefined> = {
+type BackendFetchOptions<TSchema extends ZodTypeAny | undefined = undefined> = {
 	method?: string;
 	body?: unknown;
 	headers?: Record<string, string>;
@@ -23,9 +22,7 @@ type BackendFetchOptions<TSchema extends GenericSchema | undefined = undefined> 
 
 function resolveApiBaseUrl(): string {
 	const base =
-		API_BASE_URL?.trim() ||
-		process.env.PUBLIC_API_URL?.trim() ||
-		'http://localhost:8000';
+		API_BASE_URL?.trim() || process.env.PUBLIC_API_URL?.trim() || 'http://localhost:8000';
 	return base.replace(/\/$/, '');
 }
 
@@ -64,10 +61,10 @@ function normalizeDetail(payload: unknown): { message: string; raw: unknown } {
 	return { message: 'Backend request failed', raw: payload };
 }
 
-export async function backendFetch<TSchema extends GenericSchema | undefined = undefined>(
+export async function backendFetch<TSchema extends ZodTypeAny | undefined = undefined>(
 	path: string,
 	options: BackendFetchOptions<TSchema> = {}
-): Promise<TSchema extends GenericSchema ? InferOutput<TSchema> : unknown> {
+): Promise<TSchema extends ZodTypeAny ? InferOutput<TSchema> : unknown> {
 	const { method = 'GET', body, headers = {}, responseSchema } = options;
 	const url = `${resolveApiBaseUrl()}${path.startsWith('/') ? path : `/${path}`}`;
 
@@ -93,12 +90,12 @@ export async function backendFetch<TSchema extends GenericSchema | undefined = u
 	}
 
 	if (responseSchema) {
-		const result = safeParse(responseSchema, payload);
+		const result = responseSchema.safeParse(payload);
 		if (!result.success) {
-			throw new BackendError('Response validation failed', response.status, result.issues);
+			throw new BackendError('Response validation failed', response.status, result.error.issues);
 		}
-		return result.output as TSchema extends GenericSchema ? InferOutput<TSchema> : unknown;
+		return result.data as TSchema extends ZodTypeAny ? InferOutput<TSchema> : unknown;
 	}
 
-	return payload as TSchema extends GenericSchema ? InferOutput<TSchema> : unknown;
+	return payload as TSchema extends ZodTypeAny ? InferOutput<TSchema> : unknown;
 }

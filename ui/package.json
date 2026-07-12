@@ -17,7 +17,10 @@
 		"test": "npm run test:unit -- --run && npm run test:e2e",
 		"test:e2e": "playwright install && playwright test",
 		"generate:api": "node scripts/generate-api.mjs",
-		"check:generated": "pnpm generate:api && git diff --exit-code src/lib/generated"
+		"check:generated": "pnpm generate:api && git diff --exit-code src/lib/generated",
+		"generate:api:zod": "node scripts/generate-api-zod.mjs",
+		"generate:api:zod:canonical": "node scripts/generate-api-zod.mjs --out src/lib/generated",
+		"check:generated:zod": "pnpm generate:api:zod && git diff --exit-code src/lib/generated-zod"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
@@ -67,6 +70,7 @@
 		"@opentelemetry/sdk-node": "^0.219.0",
 		"@opentelemetry/semantic-conventions": "^1.41.1",
 		"mode-watcher": "^1.1.0",
-		"valibot": "^1.2.0"
+		"valibot": "^1.2.0",
+		"zod": "^4.1.5"
 	}
 }
