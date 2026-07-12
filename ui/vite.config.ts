@@ -17,8 +17,7 @@ export default defineConfig({
 			adapter: adapter(),
 			experimental: {
 				remoteFunctions: true,
-				handleRenderingErrors: true,
-				instrumentation: { server: true }
+				handleRenderingErrors: true
 			}
 		})
 	],

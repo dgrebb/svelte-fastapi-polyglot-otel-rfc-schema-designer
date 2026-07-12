@@ -20,6 +20,12 @@
 				Status
 			</a>
 			<a
+				href="/form-design"
+				class="rounded-sm px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+			>
+				Form design
+			</a>
+			<a
 				href="/admin/api-explorer"
 				class="rounded-sm px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
 			>

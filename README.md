@@ -1,54 +1,64 @@
 # svelte-fastapi-remote-functions
 
-A **code-along example** for pairing **SvelteKit remote functions** with a **FastAPI** backend — without hand-writing API wrapper routes.
+Polyglot monorepo pairing **SvelteKit remote functions** with a **FastAPI** backend — without hand-writing API wrapper routes.
 
-This repo is the companion to a blog series that walks through the same pipeline twice: once with **Valibot**, once with **Zod**. Each approach lives on its own git branch so you can code along without manual file surgery.
+The UI consumes a generated contract from the API’s OpenAPI spec: runtime schemas, inferred TypeScript types, and SvelteKit remotes (`query`, `form`, `command`). Generated code is infrastructure; pages, forms, and UX remain handcrafted.
 
-## Code-along branches
-
-| Branch | Blog track | What you get |
-|--------|------------|--------------|
-| [`valibot`](../../tree/valibot) | Part 1 — Valibot | Valibot generator, Valibot `generated/`, Valibot `backend-fetch` |
-| [`zod`](../../tree/zod) | Part 2 — Zod | Both generators; Zod canonical in `generated/`; `generated-zod/` for comparison |
-| `main` | Latest hub | Tracks `zod` after publish; use for ongoing development |
-
-```bash
-git checkout valibot   # Part 1 — Valibot
-git checkout zod       # Part 2 — Zod
-```
-
-> **On `zod`:** canonical output in `src/lib/generated/` uses **Zod**. The Valibot generator is still present for side-by-side comparison. Switch to `valibot` for the Valibot-only track.
-
-## What you'll build
-
-The contract pipeline:
+## Contract pipeline
 
 ```
 FastAPI / Pydantic  →  openapi.json  →  runtime schemas  →  .remote.ts  →  handcrafted UI
 ```
 
-Generated code is **infrastructure, not product UI**. Humans still own pages, forms, copy, and UX. The generator gives you typed, validated primitives:
+The generator produces:
 
-- runtime schemas (Valibot or Zod, depending on branch)
+- runtime schemas (Valibot or Zod)
 - TypeScript types inferred from those schemas
-- SvelteKit remote functions (`query`, `form`, `command`)
+- SvelteKit remote functions mapped from HTTP verbs
 - endpoint metadata for tooling and exploration
 
-The demo app is a small **Agent Orchestrator**: entity CRUD on the API, a live **`/status`** page (`query.live`), and an **`/admin/api-explorer`** page to try generated remotes.
+The demo app is a small **Agent Orchestrator**: entity CRUD on the API, a live **`/status`** page (`query.live`), **`/admin/api-explorer`** to try generated remotes, and **`/form-design`** to work through schema-driven form layout and interaction.
 
-## Valibot vs Zod (on the `zod` branch)
+## Valibot and Zod
 
-Both approaches share the same OpenAPI input and remote-function mapping. Only the schema emitter and runtime validation library differ.
+Both generators read the same **`api/openapi.json`** and emit the same remote-function shape. Only the schema library and validation calls differ. The pattern is identical either way:
+
+1. Export OpenAPI from FastAPI (`make export-openapi`)
+2. Run the generator for your chosen library
+3. Import from `ui/src/lib/generated/` in Svelte — remotes call FastAPI **server-side** via [`backend-fetch.ts`](ui/src/lib/server/backend-fetch.ts)
+
+**Why both?** Valibot and Zod are both common in SvelteKit ecosystems. This repo ships two emitters so you can compare bundle size, ergonomics, and JSON Schema output without changing the OpenAPI → remote mapping. On `main` / `zod`, **Zod is canonical** in `generated/`; the Valibot generator remains for side-by-side comparison.
 
 | | Valibot | Zod |
 |---|---------|-----|
 | Generator | [`ui/scripts/generate-api.mjs`](ui/scripts/generate-api.mjs) | [`ui/scripts/generate-api-zod.mjs`](ui/scripts/generate-api-zod.mjs) |
-| Canonical output | `ui/src/lib/generated/` (on `valibot` branch) | `ui/src/lib/generated/` (on `zod` branch) |
+| Canonical output | `ui/src/lib/generated/` on `valibot` branch | `ui/src/lib/generated/` on `zod` / `main` |
 | Side-by-side staging | — | `ui/src/lib/generated-zod/` |
 | Generate | `pnpm generate:api` | `pnpm generate:api:zod` |
 | Drift check | `pnpm check:generated` | `pnpm check:generated:zod` |
 
-On **`zod`**, regenerate canonical output with:
+Remote kind mapping (both generators):
+
+| HTTP | Remote kind |
+|------|-------------|
+| GET | `query` |
+| POST / PATCH with body | `form` |
+| DELETE | `command` |
+
+### Branches
+
+| Branch | Role |
+|--------|------|
+| [`valibot`](../../tree/valibot) | Valibot-only track — `generated/` uses Valibot |
+| [`zod`](../../tree/zod) | Both generators; Zod canonical in `generated/` |
+| `main` | Ongoing development; tracks the Zod setup |
+
+```bash
+git checkout valibot   # Valibot canonical output
+git checkout zod       # Zod canonical output + Valibot generator for comparison
+```
+
+On **`zod` / `main`**, regenerate canonical Zod output:
 
 ```bash
 cd ui
@@ -86,53 +96,40 @@ Open the app at **`http://localhost:5173`** (not `127.0.0.1` — SvelteKit remot
 make up
 ```
 
-## Code-along workflow
+## Regenerating the contract
 
-### 1. Pick your branch
-
-```bash
-git checkout valibot   # or: git checkout zod
-```
-
-### 2. Export OpenAPI from FastAPI
+### 1. Export OpenAPI from FastAPI
 
 ```bash
 make export-openapi    # writes api/openapi.json
 ```
 
-### 3. Generate the frontend contract
+### 2. Generate the frontend contract
 
 ```bash
 cd ui
-pnpm generate:api                  # Valibot (valibot branch, or comparison on zod)
-pnpm generate:api:zod:canonical    # Zod canonical (zod branch only)
+pnpm generate:api                  # Valibot
+pnpm generate:api:zod:canonical    # Zod (canonical on zod / main)
 pnpm check
 ```
 
-### 4. Explore generated remotes
+### 3. Explore generated remotes
 
 - **Metadata:** [`ui/src/lib/generated/metadata/endpoints.ts`](ui/src/lib/generated/metadata/endpoints.ts)
 - **Remotes:** [`ui/src/lib/generated/remotes/agents.remote.ts`](ui/src/lib/generated/remotes/agents.remote.ts)
-- **Try it out:** http://localhost:5173/admin/api-explorer (with `make dev` running)
+- **Try it out:** http://localhost:5173/admin/api-explorer
+- **Form design:** http://localhost:5173/form-design
 
-### 5. Use remotes in handcrafted UI
+### 4. Use remotes in UI
 
-Import generated remotes and schemas directly in Svelte pages — no `+server.ts` API routes for backend calls. Remotes call FastAPI **server-side** via [`backend-fetch.ts`](ui/src/lib/server/backend-fetch.ts).
-
-Remote kind mapping (both generators):
-
-| HTTP | Remote kind |
-|------|-------------|
-| GET | `query` |
-| POST / PATCH with body | `form` |
-| DELETE | `command` |
+Import generated remotes and schemas in Svelte pages — no `+server.ts` routes for backend calls.
 
 ## Stack
 
 | Layer | Tech |
 |-------|------|
 | UI | Svelte 5, SvelteKit 3 (remote functions), shadcn-svelte, Tailwind 4, adapter-node |
-| Schemas | Valibot (`valibot` branch) or Zod (`zod` branch) |
+| Schemas | Valibot or Zod (your choice) |
 | API | FastAPI, SQLAlchemy, SQLite, Pydantic |
 | Runtime | Docker Compose, Node 24, Python 3.12 |
 
@@ -156,7 +153,7 @@ Hand-written, not generated:
 
 Enabled in [`ui/vite.config.ts`](ui/vite.config.ts). Internal URLs (`/_app/remote/...`) are **SvelteKit plumbing** — the browser talks to SvelteKit; SvelteKit calls FastAPI on the server.
 
-## Project layout (`zod` branch)
+## Project layout
 
 ```
 api/openapi.json              exported contract (make export-openapi)
@@ -164,10 +161,12 @@ ui/scripts/
   generate-api.mjs            Valibot generator
   generate-api-zod.mjs        Zod generator
 ui/src/lib/
-  generated/                  canonical contract (Zod on this branch)
-  generated-zod/              parallel Zod output for comparison
+  generated/                  canonical contract (library depends on branch)
+  generated-zod/              parallel Zod output for comparison (zod branch)
   server/backend-fetch.ts
-ui/src/routes/admin/api-explorer/
+ui/src/routes/
+  admin/api-explorer/
+  form-design/
 ```
 
 ## Environment
