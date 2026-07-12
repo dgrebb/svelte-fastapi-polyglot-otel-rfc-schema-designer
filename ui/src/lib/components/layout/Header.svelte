@@ -6,7 +6,7 @@
 	<div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
 		<div class="flex items-center gap-3">
 			<a href="/" class="font-heading text-sm font-semibold tracking-wide text-foreground">
-				Agent Orchestrator
+				FastAPI SvelteKit Schema Generation and Form Design
 			</a>
 			<span class="hidden text-xs text-muted-foreground sm:inline"
 				>LLM task &amp; workflow control</span

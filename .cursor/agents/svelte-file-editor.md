@@ -34,7 +34,7 @@ If MCP is unavailable: `npx @sveltejs/mcp@latest -y --help`
 | Adapter | `@sveltejs/adapter-node`; prod port 3000 |
 | Package | `svelte-fastapi-polyglot-otel-rfc-schema-designer-ui` in `package.json` |
 
-Product UI copy may say **"Agent Orchestrator"** — do not rename unless asked.
+Product UI copy may say **"FastAPI SvelteKit Schema Generation and Form Design"** — do not rename unless asked.
 
 ## Workflow
 

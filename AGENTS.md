@@ -145,7 +145,7 @@ Svelte MCP instructions: [`.cursor/instructions/svelte.md`](.cursor/instructions
 - Custom SSE endpoints when `query.live` suffices
 - API endpoints solely to feed UI status (UI status is self-contained)
 - Committing secrets, `.env`, `data/`, `node_modules/`, `.venv/`
-- Renaming “Agent Orchestrator” in the UI unless asked (product name ≠ repo name)
+- Renaming “FastAPI SvelteKit Schema Generation and Form Design” in the UI unless asked (product name ≠ repo name)
 
 ## Quick commands
 

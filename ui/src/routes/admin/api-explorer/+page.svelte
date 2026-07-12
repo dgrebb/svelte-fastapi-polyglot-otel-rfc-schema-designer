@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>API Explorer · Agent Orchestrator UI</title>
+	<title>API Explorer · FastAPI SvelteKit Schema Generation and Form Design UI</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 

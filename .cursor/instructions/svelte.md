@@ -28,6 +28,6 @@ Only after user confirms; never for code already written to the repo.
 - **Remote functions** — `experimental.remoteFunctions` in `ui/vite.config.ts`; live queries in `*.remote.ts`.
 - **Status example** — `ui/src/routes/status/` + `query.live` + `status-stream.ts`.
 - **UI stack** — shadcn-svelte (lyra), Tailwind 4, adapter-node.
-- **Package name** — `svelte-fastapi-polyglot-otel-rfc-schema-designer-ui`; product copy may still say "Agent Orchestrator".
+- **Package name** — `svelte-fastapi-polyglot-otel-rfc-schema-designer-ui`; product copy may still say "FastAPI SvelteKit Schema Generation and Form Design".
 
 Delegate file-level Svelte work to the **`svelte-file-editor`** subagent when possible.

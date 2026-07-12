@@ -1,7 +1,7 @@
 {
 	"openapi": "3.1.0",
 	"info": {
-		"title": "Agent Orchestrator API",
+		"title": "FastAPI SvelteKit Schema Generation and Form Design API",
 		"version": "0.0.1"
 	},
 	"paths": {
@@ -195,7 +195,10 @@
 				}
 			},
 			"Agent": {
-				"allOf": [{ "$ref": "#/components/schemas/AgentCreate" }, { "$ref": "#/components/schemas/Timestamped" }]
+				"allOf": [
+					{ "$ref": "#/components/schemas/AgentCreate" },
+					{ "$ref": "#/components/schemas/Timestamped" }
+				]
 			},
 			"Timestamped": {
 				"type": "object",

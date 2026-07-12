@@ -4,7 +4,7 @@
 </script>
 
 <div class="mx-auto max-w-5xl px-4 py-16">
-	<Badge variant="outline" class="mb-4">Agent Orchestrator</Badge>
+	<Badge variant="outline" class="mb-4">FastAPI SvelteKit Schema Generation and Form Design</Badge>
 	<h1 class="font-heading text-3xl font-semibold tracking-tight">
 		LLM agents, tasks &amp; workflows
 	</h1>

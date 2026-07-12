@@ -17,7 +17,7 @@ git checkout valibot   # Part 1 — Valibot
 git checkout zod       # Part 2 — Zod
 ```
 
-> **On `zod`:** canonical output in `src/lib/generated/` uses **Zod**. The Valibot generator is still present for side-by-side comparison. Switch to `valibot` for the Valibot-only track.
+> **On `zod`:** canonical FastAPI SvelteKit Schema Generation and Form Design/generated/` uses **Zod**. The Valibot generator is still present for side-by-side comparison. Switch to `valibot` for the Valibot-only track.
 
 ## What you'll build
 
