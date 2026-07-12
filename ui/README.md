@@ -2,7 +2,9 @@
 
 SvelteKit frontend for **svelte-fastapi-polyglot-otel-rfc-schema-designer** — code-along repo for OpenAPI → SvelteKit remote functions.
 
-See the [root README](../README.md) for branch setup (`valibot` vs `zod`) and the full pipeline.
+> **On `valibot`:** this branch uses **Valibot** only. For Zod, run `git checkout zod`.
+
+See the [root README](../README.md) for the full pipeline and branch overview.
 
 ```bash
 pnpm install
@@ -10,20 +12,25 @@ pnpm dev
 pnpm check
 ```
 
-## Branches
+## Generate (Valibot)
 
-| Branch | Generate command | Runtime validation |
-|--------|------------------|-------------------|
-| `valibot` | `pnpm generate:api` | Valibot (`backend-fetch` + `env.ts`) |
-| `zod` | `pnpm generate:api:zod:canonical` | Zod (`backend-fetch` + `env.ts`) |
-
-On **`zod`**, both generators are available:
+Reads [`../api/openapi.json`](../api/openapi.json) from `make export-openapi`:
 
 ```bash
-pnpm generate:api                  # Valibot → overwrites generated/ (comparison)
-pnpm generate:api:zod              # Zod → generated-zod/ (side-by-side)
-pnpm generate:api:zod:canonical    # Zod → generated/ (canonical)
-pnpm check:generated:zod
+pnpm generate:api
+pnpm check:generated
+```
+
+Output: `src/lib/generated/` — Valibot schemas, types, and remotes.
+
+[`backend-fetch.ts`](src/lib/server/backend-fetch.ts) uses Valibot `safeParse`.
+
+## Zod track
+
+The `zod` branch adds `generate-api-zod.mjs`, `generated-zod/`, and Zod runtime validation. Switch branches instead of editing files by hand:
+
+```bash
+git checkout zod
 ```
 
 ## Try generated remotes
