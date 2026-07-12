@@ -1,7 +1,7 @@
 ---
 name: openspec-pm
 description: >-
-  OpenSpec project manager for svelte-fastapi-remote-functions. Use proactively
+  OpenSpec project manager for svelte-fastapi-polyglot-otel-rfc-schema-designer. Use proactively
   for proposals, change planning, task breakdown, and coordinating multi-agent
   work across openspec/changes/. May assign tasks and delegate to other subagents
   without waiting on the main orchestrator, but MUST keep the main thread

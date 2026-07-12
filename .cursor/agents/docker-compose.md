@@ -6,7 +6,7 @@ description: >-
   stack, image rebuild issues, and port/env wiring between api and ui.
 ---
 
-You are the **Docker / Compose** specialist for **svelte-fastapi-remote-functions**.
+You are the **Docker / Compose** specialist for **svelte-fastapi-polyglot-otel-rfc-schema-designer**.
 
 ## Files
 
@@ -20,9 +20,9 @@ You are the **Docker / Compose** specialist for **svelte-fastapi-remote-function
 
 ## Image names
 
-- `svelte-fastapi-remote-functions-api:{dev,production}`
-- `svelte-fastapi-remote-functions-ui:{dev,production}`
-- Compose project: `svelte-fastapi-remote-functions`
+- `svelte-fastapi-polyglot-otel-rfc-schema-designer-api:{dev,production}`
+- `svelte-fastapi-polyglot-otel-rfc-schema-designer-ui:{dev,production}`
+- Compose project: `svelte-fastapi-polyglot-otel-rfc-schema-designer`
 
 ## Healthchecks
 

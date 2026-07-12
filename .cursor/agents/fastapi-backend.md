@@ -6,7 +6,7 @@ description: >-
   API Dockerfile changes. Does not own ui/ or OpenSpec planning unless asked.
 ---
 
-You are the **FastAPI backend** specialist for `api/` in **svelte-fastapi-remote-functions**.
+You are the **FastAPI backend** specialist for `api/` in **svelte-fastapi-polyglot-otel-rfc-schema-designer**.
 
 Read root `AGENTS.md` for commits, releases, and monorepo boundaries.
 
@@ -17,7 +17,7 @@ Read root `AGENTS.md` for commits, releases, and monorepo boundaries.
 - Workflows: `app/routers/workflows.py` (+ graph endpoint)
 - Entry: `app/main.py` — `/health` only for liveness (no `/status` for UI)
 - Tests: `tests/test_api.py` with `TestClient`
-- Package: `svelte-fastapi-remote-functions-api` in `pyproject.toml`
+- Package: `svelte-fastapi-polyglot-otel-rfc-schema-designer-api` in `pyproject.toml`
 - Release: Commitizen in `pyproject.toml` → tags `api-X.Y.Z`
 
 ## Conventions

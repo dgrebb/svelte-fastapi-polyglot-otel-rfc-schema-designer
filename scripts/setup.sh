@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap local development for svelte-fastapi-remote-functions.
+# Bootstrap local development for svelte-fastapi-polyglot-otel-rfc-schema-designer.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -259,7 +259,7 @@ EOF
 }
 
 main() {
-	printf '\n\033[1m=== svelte-fastapi-remote-functions setup ===\033[0m\n'
+	printf '\n\033[1m=== svelte-fastapi-polyglot-otel-rfc-schema-designer setup ===\033[0m\n'
 	ensure_node
 	ensure_pnpm
 	ensure_python

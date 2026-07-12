@@ -4,7 +4,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
       target: dev
-    image: svelte-fastapi-remote-functions-api:dev
+    image: svelte-fastapi-polyglot-otel-rfc-schema-designer-api:dev
     environment:
       CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
     volumes:
@@ -28,7 +28,7 @@ services:
       args:
         UI_VERSION: ${UI_VERSION}
         API_VERSION: ${API_VERSION}
-    image: svelte-fastapi-remote-functions-ui:dev
+    image: svelte-fastapi-polyglot-otel-rfc-schema-designer-ui:dev
     ports:
       - "5173:5173"
     environment:

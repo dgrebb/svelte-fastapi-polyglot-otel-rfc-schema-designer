@@ -23,7 +23,7 @@ def is_enabled() -> bool:
 
 def _service_version() -> str:
     try:
-        return importlib.metadata.version("svelte-fastapi-remote-functions-api")
+        return importlib.metadata.version("svelte-fastapi-polyglot-otel-rfc-schema-designer-api")
     except importlib.metadata.PackageNotFoundError:
         return "unknown"
 

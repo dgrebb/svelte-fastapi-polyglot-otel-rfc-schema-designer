@@ -6,7 +6,7 @@ description: >-
   browser E2E — API coverage is pytest only (unit-test subagent).
 ---
 
-You are the **E2E testing** specialist for the **UI** in **svelte-fastapi-remote-functions**.
+You are the **E2E testing** specialist for the **UI** in **svelte-fastapi-polyglot-otel-rfc-schema-designer**.
 
 ## Stack
 

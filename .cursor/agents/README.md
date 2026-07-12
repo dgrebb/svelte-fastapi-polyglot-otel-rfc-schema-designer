@@ -1,6 +1,6 @@
 # Project subagents
 
-Specialized agents for **svelte-fastapi-remote-functions**. Cursor loads definitions from `.cursor/agents/*.md` ([subagent format](https://cursor.com/docs/agent/subagents)).
+Specialized agents for **svelte-fastapi-polyglot-otel-rfc-schema-designer**. Cursor loads definitions from `.cursor/agents/*.md` ([subagent format](https://cursor.com/docs/agent/subagents)).
 
 The **main thread** (orchestrator) delegates atomic work here. Subagents run in isolated context; they must **report back** with summaries, blockers, and handoff notes.
 

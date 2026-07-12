@@ -1,8 +1,8 @@
 # UI
 
-SvelteKit frontend for **svelte-fastapi-remote-functions** — code-along repo for OpenAPI → SvelteKit remote functions.
+SvelteKit frontend for **svelte-fastapi-polyglot-otel-rfc-schema-designer** — OpenAPI-driven remote functions against the FastAPI backend.
 
-See the [root README](../README.md) for branch setup (`valibot` vs `zod`) and the full pipeline.
+See the [root README](../README.md) for the full pipeline and why both Valibot and Zod generators exist.
 
 ```bash
 pnpm install
@@ -10,27 +10,46 @@ pnpm dev
 pnpm check
 ```
 
-## Branches
+## Schema libraries
 
-| Branch | Generate command | Runtime validation |
-|--------|------------------|-------------------|
-| `valibot` | `pnpm generate:api` | Valibot (`backend-fetch` + `env.ts`) |
-| `zod` | `pnpm generate:api:zod:canonical` | Zod (`backend-fetch` + `env.ts`) |
+Both generators emit the same remote-function layout from `api/openapi.json`. Pick one as canonical for `src/lib/generated/`:
 
-On **`zod`**, both generators are available:
+| Library | Generate command | Drift check |
+|---------|------------------|-------------|
+| Valibot | `pnpm generate:api` | `pnpm check:generated` |
+| Zod | `pnpm generate:api:zod:canonical` | `pnpm check:generated:zod` |
+
+On **`zod` / `main`**, compare outputs without overwriting canonical `generated/`:
 
 ```bash
-pnpm generate:api                  # Valibot → overwrites generated/ (comparison)
-pnpm generate:api:zod              # Zod → generated-zod/ (side-by-side)
+pnpm generate:api                  # Valibot → overwrites generated/ (comparison only)
+pnpm generate:api:zod              # Zod → generated-zod/
 pnpm generate:api:zod:canonical    # Zod → generated/ (canonical)
-pnpm check:generated:zod
 ```
 
-## Try generated remotes
+[`backend-fetch.ts`](src/lib/server/backend-fetch.ts) and [`env.ts`](src/env.ts) use whichever library is canonical on your branch (`safeParse` with Zod on `zod` / `main`).
 
-With `make dev` running: **http://localhost:5173/admin/api-explorer** (use `localhost`, not `127.0.0.1`).
+## Generated contract
 
-## Highlights
+After `make export-openapi` from the repo root:
 
-- `src/routes/status/` — `query.live` live stream
-- `src/lib/generated/remotes/agents.remote.ts` — generated agents CRUD remotes
+```bash
+pnpm generate:api:zod:canonical   # or generate:api on valibot branch
+```
+
+Key paths:
+
+- `src/lib/generated/metadata/endpoints.ts` — operation index
+- `src/lib/generated/schemas/` — request/response schemas
+- `src/lib/generated/remotes/` — `query`, `form`, `command` exports
+
+## Routes
+
+With `make dev` running (use **`http://localhost:5173`**, not `127.0.0.1`):
+
+| Route | Purpose |
+|-------|---------|
+| `/status` | Hand-written `query.live` status stream |
+| `/admin/api-explorer` | Try generated remotes |
+| `/form-design` | Schema introspection and remote-function form panels |
+| `/form-design/shadcn` | shadcn-svelte + Superforms widget playground |

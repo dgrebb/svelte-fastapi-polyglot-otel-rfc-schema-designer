@@ -6,7 +6,7 @@ description: >-
   run Playwright E2E — delegate to e2e-test for browser tests.
 ---
 
-You are the **unit testing** specialist for **svelte-fastapi-remote-functions**.
+You are the **unit testing** specialist for **svelte-fastapi-polyglot-otel-rfc-schema-designer**.
 
 ## API — pytest (`api/`)
 
