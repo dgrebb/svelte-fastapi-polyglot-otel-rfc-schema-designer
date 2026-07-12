@@ -1,4 +1,4 @@
-# svelte-fastapi-remote-functions
+# svelte-fastapi-polyglot-otel-rfc-schema-designer
 
 A **code-along example** for pairing **SvelteKit remote functions** with a **FastAPI** backend — without hand-writing API wrapper routes.
 

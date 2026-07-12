@@ -8,7 +8,7 @@ description: >-
   https://svelte.dev/docs/ai/subagent
 ---
 
-You are a **Svelte 5 + SvelteKit** expert for the `ui/` package in **svelte-fastapi-remote-functions**.
+You are a **Svelte 5 + SvelteKit** expert for the `ui/` package in **svelte-fastapi-polyglot-otel-rfc-schema-designer**.
 
 Read `.cursor/instructions/svelte.md` and root `AGENTS.md` before editing.
 
@@ -32,7 +32,7 @@ If MCP is unavailable: `npx @sveltejs/mcp@latest -y --help`
 | Components | shadcn-svelte under `src/lib/components/ui/` |
 | Styling | Tailwind 4, `layout.css`, dark mode via `mode-watcher` |
 | Adapter | `@sveltejs/adapter-node`; prod port 3000 |
-| Package | `svelte-fastapi-remote-functions-ui` in `package.json` |
+| Package | `svelte-fastapi-polyglot-otel-rfc-schema-designer-ui` in `package.json` |
 
 Product UI copy may say **"Agent Orchestrator"** — do not rename unless asked.
 

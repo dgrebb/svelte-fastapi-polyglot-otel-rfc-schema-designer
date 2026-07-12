@@ -26,9 +26,9 @@ async def lifespan(fastapi_app: FastAPI):
 
 
 app = FastAPI(
-    title="svelte-fastapi-remote-functions API",
+    title="svelte-fastapi-polyglot-otel-rfc-schema-designer API",
     description=(
-        "FastAPI backend for the svelte-fastapi-remote-functions example — "
+        "FastAPI backend for the svelte-fastapi-polyglot-otel-rfc-schema-designer example — "
         "entity CRUD, workflows, and OpenAPI docs."
     ),
     version="0.1.0",
