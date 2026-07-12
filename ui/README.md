@@ -1,30 +1,36 @@
 # UI
 
-SvelteKit frontend for **svelte-fastapi-remote-functions**. See the [root README](../README.md) for setup and architecture.
+SvelteKit frontend for **svelte-fastapi-remote-functions** — code-along repo for OpenAPI → SvelteKit remote functions.
+
+See the [root README](../README.md) for branch setup (`valibot` vs `zod`) and the full pipeline.
 
 ```bash
 pnpm install
 pnpm dev
 pnpm check
-pnpm generate:api
 ```
 
-## OpenAPI code generation
+## Branches
 
-Generated agents remotes live under `src/lib/generated/`. Regenerate after API OpenAPI export changes:
+| Branch | Generate command | Runtime validation |
+|--------|------------------|-------------------|
+| `valibot` | `pnpm generate:api` | Valibot (`backend-fetch` + `env.ts`) |
+| `zod` | `pnpm generate:api:zod:canonical` | Zod (`backend-fetch` + `env.ts`) |
+
+On **`zod`**, both generators are available:
 
 ```bash
-pnpm generate:api          # reads ../api/openapi.json
-pnpm check:generated       # fail if generated output drifts
+pnpm generate:api                  # Valibot → overwrites generated/ (comparison)
+pnpm generate:api:zod              # Zod → generated-zod/ (side-by-side)
+pnpm generate:api:zod:canonical    # Zod → generated/ (canonical)
+pnpm check:generated:zod
 ```
 
-Requires `api/openapi.json` from the API export script (`make export-openapi`). Set `API_BASE_URL` (or `PUBLIC_API_URL`) for server-side `backendFetch`.
+## Try generated remotes
+
+With `make dev` running: **http://localhost:5173/admin/api-explorer** (use `localhost`, not `127.0.0.1`).
 
 ## Highlights
 
-`src/routes/status/` (`query.live` live stream), `src/lib/server/status-stream.ts`.
-
-## OpenSpec & agent tooling
-
-- **Subagents** — [`.cursor/agents/`](.cursor/agents/README.md)
-- **OpenSpec** — `openspec/` (slash commands: `/opsx:apply`, etc.)
+- `src/routes/status/` — `query.live` live stream
+- `src/lib/generated/remotes/agents.remote.ts` — generated agents CRUD remotes
