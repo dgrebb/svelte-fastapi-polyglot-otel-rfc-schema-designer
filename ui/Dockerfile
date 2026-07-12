@@ -59,8 +59,8 @@ FROM ${NODE_IMAGE} AS runner
 ARG UI_VERSION=unknown
 ARG API_VERSION=unknown
 
-LABEL org.opencontainers.image.description="svelte-fastapi-remote-functions UI (SvelteKit)"
-LABEL org.opencontainers.image.source="https://github.com/svelte-fastapi-remote-functions"
+LABEL org.opencontainers.image.description="svelte-fastapi-polyglot-otel-rfc-schema-designer UI (SvelteKit)"
+LABEL org.opencontainers.image.source="https://github.com/dgrebb/svelte-fastapi-polyglot-otel-rfc-schema-designer"
 
 RUN apk upgrade -U --no-cache && \
     apk add --no-cache curl && \

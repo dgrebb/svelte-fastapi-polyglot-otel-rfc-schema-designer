@@ -1,11 +1,11 @@
-name: svelte-fastapi-remote-functions
+name: svelte-fastapi-polyglot-otel-rfc-schema-designer
 
 services:
   api:
     build:
       context: ./api
       target: production
-    image: svelte-fastapi-remote-functions-api:production
+    image: svelte-fastapi-polyglot-otel-rfc-schema-designer-api:production
     ports:
       - "8000:8000"
     environment:
@@ -32,7 +32,7 @@ services:
       args:
         UI_VERSION: ${UI_VERSION}
         API_VERSION: ${API_VERSION}
-    image: svelte-fastapi-remote-functions-ui:production
+    image: svelte-fastapi-polyglot-otel-rfc-schema-designer-ui:production
     ports:
       - "3000:3000"
     environment:

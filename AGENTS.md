@@ -1,4 +1,4 @@
-# Agent guide — svelte-fastapi-remote-functions
+# Agent guide — svelte-fastapi-polyglot-otel-rfc-schema-designer
 
 This repo is a **polyglot monorepo** (`api/` + `ui/`) designed for parallel human and LLM development. Treat each side as an independent product that happens to share a git root.
 

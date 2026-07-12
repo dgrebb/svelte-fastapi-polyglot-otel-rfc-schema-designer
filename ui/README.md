@@ -1,6 +1,6 @@
 # UI
 
-SvelteKit frontend for **svelte-fastapi-remote-functions** — OpenAPI-driven remote functions against the FastAPI backend.
+SvelteKit frontend for **svelte-fastapi-polyglot-otel-rfc-schema-designer** — OpenAPI-driven remote functions against the FastAPI backend.
 
 See the [root README](../README.md) for the full pipeline and why both Valibot and Zod generators exist.
 

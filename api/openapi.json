@@ -349,8 +349,8 @@
     }
   },
   "info": {
-    "description": "FastAPI backend for the svelte-fastapi-remote-functions example \u2014 entity CRUD, workflows, and OpenAPI docs.",
-    "title": "svelte-fastapi-remote-functions API",
+    "description": "FastAPI backend for the svelte-fastapi-polyglot-otel-rfc-schema-designer example \u2014 entity CRUD, workflows, and OpenAPI docs.",
+    "title": "svelte-fastapi-polyglot-otel-rfc-schema-designer API",
     "version": "0.1.0"
   },
   "openapi": "3.1.0",

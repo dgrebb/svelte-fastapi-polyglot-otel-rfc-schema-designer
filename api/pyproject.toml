@@ -1,7 +1,7 @@
 [project]
-name = "svelte-fastapi-remote-functions-api"
+name = "svelte-fastapi-polyglot-otel-rfc-schema-designer-api"
 version = "0.1.0"
-description = "FastAPI backend for the svelte-fastapi-remote-functions example"
+description = "FastAPI backend for the svelte-fastapi-polyglot-otel-rfc-schema-designer example"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
