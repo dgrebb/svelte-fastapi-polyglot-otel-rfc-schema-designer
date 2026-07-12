@@ -52,7 +52,7 @@
 </script>
 
 <svelte:head>
-	<title>Status · Agent Orchestrator UI</title>
+	<title>Status · FastAPI SvelteKit Schema Generation and Form Design UI</title>
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
