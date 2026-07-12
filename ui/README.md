@@ -1,6 +1,6 @@
 # UI
 
-SvelteKit frontend for **svelte-fastapi-polyglot-otel-rfc-schema-designer** — code-along repo for OpenAPI → SvelteKit remote functions.
+SvelteKit frontend for **svelte-fastapi-polyglot-otel-rfc-schema-designer** — OpenAPI-driven remote functions generation and form designer.
 
 See the [root README](../README.md) for branch setup (`valibot` vs `zod`) and the full pipeline.
 
